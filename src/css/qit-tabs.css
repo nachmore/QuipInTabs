@@ -1,0 +1,136 @@
+.etabs-tabgroup {
+    width: 100%;
+    height: 32px;
+    background-color: #f9fafa;
+    cursor: default;
+    font: caption;
+    font-size: 14px;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  .etabs-tabs {
+  }
+  
+  .etabs-tab {
+    display: none;
+    position: relative;
+    color: #333;
+    height: 22px;
+    padding: 6px 8px 4px;
+    border: 1px solid #e3e5e8;
+    border-bottom: none;
+    border-left: none;
+    font: caption;
+    font-size: 14px;
+    background-color: #f9fafa;
+    cursor: default;
+  }
+  
+  /* Dragula */
+  .etabs-tab.gu-mirror {
+    padding-bottom: 0;
+  }
+  
+  .etabs-tab:first-child {
+    border-left: none;
+  }
+  
+  .etabs-tab.visible {
+    display: inline-block;
+    float: left;
+  }
+  
+  .etabs-tab.active {
+    background: #f1f2f4;
+  }
+  
+  .etabs-tab.flash {
+    background: linear-gradient(to bottom, rgba(255,243,170,1) 0%,rgba(255,227,37,1) 100%);
+  }
+  
+  .etabs-buttons {
+    float: left;
+  }
+  
+  .etabs-buttons button {
+    float: left;
+    color: #333;
+    background: none;
+    border: none;
+    font-size: 12px;
+    margin-top: 6px;
+    border-radius: 2px;
+    margin-left: 4px;
+    width: 20px;
+    text-align: center;
+    padding: 4px 0;
+  }
+  
+  .etabs-buttons button:hover {
+    color: #eee;
+    background-color: #aaa;
+  }
+  
+  .etabs-tab-badge {
+    position: absolute;
+    right: 0;
+    top: -7px;
+    background: red;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+  
+  .etabs-tab-badge.hidden {
+    display: none;
+  }
+  
+  .active > .etabs-tab-icon {
+    display: inline-block;
+    height: 16px;
+    color: #fb7555;
+  }
+  
+  .etabs-tab-icon img {
+    max-width: 16px;
+    max-height: 16px;
+  }
+  
+  .etabs-tab-title {
+    display: inline-block;
+    margin-left: 0px;
+  }
+  
+  .etabs-tab-buttons {
+    display: inline-block;
+    margin-left: 10px;
+  }
+  
+  .etabs-tab-buttons button {
+    display: inline-block;
+    color: #333;
+    background: none;
+    border: none;
+    width: 20px;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 0.7em;
+  }
+  
+  .etabs-tab-buttons button:hover {
+    color: #eee;
+    background-color: #aaa;
+  }
+  
+  .etabs-views {
+    position: relative;
+    border-top: 2px solid #e3e5e8;
+    height: calc(100vh - 34px);
+  }
+  
+  .etab-view {
+    position: relative;
+  }
+  
