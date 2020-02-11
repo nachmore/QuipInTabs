@@ -9,13 +9,6 @@ window.addEventListener('DOMContentLoaded', () => {
   for (const type of ['chrome', 'node', 'electron']) {
     replaceText(`${type}-version`, process.versions[type])
   }
-
-  initTabs()
 })
 
-function initTabs() {
-
-  const TabGroup = require('electron-tabs')
-
-  let tabGroup = new TabGroup();
-}
+require('./qit.js')
