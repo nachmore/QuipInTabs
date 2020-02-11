@@ -11,4 +11,4 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-require('./qit.js')
+require('./qit')
