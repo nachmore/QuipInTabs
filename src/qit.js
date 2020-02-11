@@ -5,6 +5,24 @@ window.addEventListener('DOMContentLoaded', () => {
   initTabs();
 })
 
+const APP_URL = getAppUrl()
+
+function getAppUrl() {
+
+  try {
+    const {APP_URL} = require('./qit.userconf')
+
+    return APP_URL
+  } catch (err) {
+    var msg = `Could not load userconf!
+
+Rename qit.userconf -> qit.userconf.js and fill in the values.
+If you've done this already then please check for syntax errors`
+
+    console.log(msg)
+    alert(msg)
+  }
+}
 
 function initTabs() {
 

@@ -1,0 +1,5 @@
+// Rename this file to 'qit.userconf.js' and fill in the values below
+
+module.exports = {
+  APP_URL: **fill in a Quip website url...**
+}
