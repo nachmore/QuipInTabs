@@ -30,6 +30,24 @@ function initTabs() {
 
   const TabGroup = require('electron-tabs')
 
-  let tabGroup = new TabGroup();
+  let tabGroup = new TabGroup({
+    newTab: {
+      title: '',
+      icon: 'fa fa-comment-medical',
+      src: APP_URL,
+      visible: true,
+      active: true
+    },    
+    closeButtonText: '❌',
+    newTabButtonText: '➕'
+  })
+
+  let initialTab = tabGroup.addTab({
+    title: "",
+    src: APP_URL,
+    icon: 'fa fa-comment-medical',
+    visible: true,
+    active: true
+  })
   
 }
