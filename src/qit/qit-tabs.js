@@ -6,7 +6,8 @@ var QitTabs = module.exports = {
 
   init: () => {
     const TabGroup = require('electron-tabs')
-    alert(QitTabs._config.APP_URL)
+    const dragula = require('dragula')
+
     QitTabs.tabGroup = new TabGroup({
       newTab: {
         title: '',
@@ -16,7 +17,12 @@ var QitTabs = module.exports = {
         active: true
       },    
       closeButtonText: '❌',
-      newTabButtonText: '➕'
+      newTabButtonText: '➕',
+      ready: function (tabGroup) {
+        dragula([tabGroup.tabContainer], {
+          direction: "horizontal"
+        });
+      }      
     })
   
     let initialTab = QitTabs.tabGroup.addTab({
