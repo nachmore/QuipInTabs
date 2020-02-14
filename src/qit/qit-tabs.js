@@ -11,10 +11,10 @@ var QitTabs = module.exports = {
     QitTabs.tabGroup = new TabGroup({
       newTab: {
         title: '',
-        icon: 'fa fa-comment-medical',
         src: QitTabs._config.APP_URL,
         visible: true,
-        active: true
+        active: true,
+        ready: QitTabs.onTabReady
       },    
       closeButtonText: '❌',
       newTabButtonText: '➕',
@@ -26,13 +26,35 @@ var QitTabs = module.exports = {
     })
   
     let initialTab = QitTabs.tabGroup.addTab({
-      title: "",
+      title: '',
       src: QitTabs._config.APP_URL,
-      icon: 'fa fa-comment-medical',
       visible: true,
-      active: true
+      active: true,
+      ready: QitTabs.onTabReady
     })
     
-  }
+  },
 
+  onTabReady: (tab) => {
+
+    tab.webview.addEventListener('did-stop-loading', () => {
+
+      // workaround for cursor disappearing
+      // https://github.com/electron/electron/issues/14474
+      tab.webview.blur()
+      tab.webview.focus()
+
+      setTabTitle(tab)
+    });
+  }
+}
+
+// "private" functions
+
+function setTabTitle(tab) {
+
+  // strip the " - Quip" from the page title for cleaner tab titles
+
+  let title = tab.webview.getTitle().replace(' - Quip', '')
+  tab.setTitle(title)
 }
