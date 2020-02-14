@@ -1,8 +1,11 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
 const path = require('path')
 
 function createWindow () {
+
+  app.allowRendererProcessReuse = true
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -17,6 +20,9 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
+  
+  // disable ctrl+w. Yes, could update whole menu, but that's a task for another day :)
+  Menu.getApplicationMenu().items[3].submenu.items[2].enabled = false
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()

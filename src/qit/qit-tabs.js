@@ -25,14 +25,21 @@ var QitTabs = module.exports = {
       }      
     })
   
-    let initialTab = QitTabs.tabGroup.addTab({
+    QitTabs.newTab()
+  },
+
+  newTab: (url) => {
+
+    let newTab = QitTabs.tabGroup.addTab({
       title: '',
-      src: QitTabs._config.APP_URL,
+      src: url ?? QitTabs._config.APP_URL,
       visible: true,
       active: true,
       ready: QitTabs.onTabReady
     })
-    
+
+    return newTab
+
   },
 
   onTabReady: (tab) => {
@@ -45,6 +52,9 @@ var QitTabs = module.exports = {
       tab.webview.focus()
 
       setTabTitle(tab)
+
+      let QitKeyHooks = require('./qit-keyhooks')
+      QitKeyHooks.hookTab(tab)
     });
   }
 }
@@ -53,8 +63,9 @@ var QitTabs = module.exports = {
 
 function setTabTitle(tab) {
 
-  // strip the " - Quip" from the page title for cleaner tab titles
+  // strip " - Quip" and the '([update_count])' from the page title for cleaner tab titles
+  // update count is highlighted within the Quip UI, so useless in the tab header
 
-  let title = tab.webview.getTitle().replace(' - Quip', '')
+  let title = tab.webview.getTitle().replace(' - Quip', '').replace(/\(\d+\)/, "")
   tab.setTitle(title)
 }

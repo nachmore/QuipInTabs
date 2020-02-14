@@ -3,9 +3,9 @@
 
 window.addEventListener('DOMContentLoaded', () => {
 
-  let qitConfig = require('./qit/qit-config')
-  qitConfig.APP_URL
-
   let qitTabs = require('./qit/qit-tabs')
-  qitTabs.init();
+  qitTabs.init()
+
+  let qitKeyHooks = require('./qit/qit-keyhooks')
+  qitKeyHooks.init()
 })
