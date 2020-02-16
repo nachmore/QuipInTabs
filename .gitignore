@@ -1,6 +1,9 @@
 # User configuration
 *.userconf.js
 
+# Build artifacts
+qit-win32-*
+
 # Logs
 logs
 *.log
