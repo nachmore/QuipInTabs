@@ -30,15 +30,32 @@ var QitTabs = module.exports = {
 
   // Checks for a quip URL in the provided arguments and opens a tab for each
   // otherwise opens a default new tab
+  // If a tab with the same URL alrady exists, then it is focused instead of creating
+  // a new tab
   newTabsFromArgv: (argv) => {
 
     let opened = false
 
-    for (let arg of argv) {
-      let url = getQuipUrl(arg)
+    for (const arg of argv) {
+      const url = getQuipUrl(arg)
 
       if (url) {
-        QitTabs.newTab(url)
+
+        let foundExisting = false
+
+        for (const tab of QitTabs.tabGroup.tabs) {
+
+          if (tab.webviewAttributes.src === url) {
+            foundExisting = true
+            tab.activate()
+            break
+          }
+
+        }
+
+        if (!foundExisting) 
+          QitTabs.newTab(url)
+
         opened = true
       }
 
@@ -47,7 +64,6 @@ var QitTabs = module.exports = {
     // if we couldn't find anything to open a tab with then just open a default tab
     if (!opened)
       QitTabs.newTab()
-
   },
 
   newTab: (url) => {
