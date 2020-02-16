@@ -25,7 +25,7 @@ var QitTabs = module.exports = {
       }      
     })
   
-    QitTabs.newTab()
+    QitTabs.newTab(getStartUrl())
   },
 
   newTab: (url) => {
@@ -60,6 +60,25 @@ var QitTabs = module.exports = {
 }
 
 // "private" functions
+
+function getStartUrl() {
+
+  let url = null
+
+  // check if we were invoked as a protocol handler (or with a URL as an arg)
+  let argv = require('electron').remote.process.argv
+
+  for (let arg of argv) {
+
+    if (arg.startsWith('quip://')) {
+      let quipDocId = arg.replace('quip://', '').replace('/', '')
+
+      url = `https://quip-amazon.com/${quipDocId}?skip_desktop_app_redirect=1`
+    }
+  }
+
+  return url ?? QitTabs._config.APP_URL
+}
 
 function setTabTitle(tab) {
 

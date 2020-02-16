@@ -6,6 +6,10 @@ function createWindow () {
 
   app.allowRendererProcessReuse = true
 
+  app.setAsDefaultProtocolClient("quip")
+
+  console.log(process.argv)
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
