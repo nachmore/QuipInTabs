@@ -7,11 +7,32 @@ function createWindow () {
   app.allowRendererProcessReuse = true
 
   app.setAsDefaultProtocolClient("quip")
-
+  
   console.log(process.argv)
+  var mainWindow = null
+
+  const gotLock = app.requestSingleInstanceLock()
+
+  if (!gotLock) {
+    app.quit()
+    return
+  }
+
+  app.on('second-instance', (event, argv, cwd) => {
+    console.log("secondary instance launched...")
+
+    if (mainWindow) {
+      if (mainWindow.isMinimized())
+        mainWindow.restore()
+      mainWindow.focus()
+
+      mainWindow.webContents.send(require('./qit/qit-ipc-messages').SECOND_INSTANCE, argv)
+    }
+
+  })
 
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     icon: "./img/icon.png",

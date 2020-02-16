@@ -28,6 +28,28 @@ var QitTabs = module.exports = {
     QitTabs.newTab(getStartUrl())
   },
 
+  // Checks for a quip URL in the provided arguments and opens a tab for each
+  // otherwise opens a default new tab
+  newTabsFromArgv: (argv) => {
+
+    let opened = false
+
+    for (let arg of argv) {
+      let url = getQuipUrl(arg)
+
+      if (url) {
+        QitTabs.newTab(url)
+        opened = true
+      }
+
+    }
+
+    // if we couldn't find anything to open a tab with then just open a default tab
+    if (!opened)
+      QitTabs.newTab()
+
+  },
+
   newTab: (url) => {
 
     let newTab = QitTabs.tabGroup.addTab({
@@ -70,14 +92,30 @@ function getStartUrl() {
 
   for (let arg of argv) {
 
-    if (arg.startsWith('quip://')) {
-      let quipDocId = arg.replace('quip://', '').replace('/', '')
+    url = getQuipUrl(arg)
 
-      url = `https://quip-amazon.com/${quipDocId}?skip_desktop_app_redirect=1`
-    }
+    if (url)
+      break
   }
 
   return url ?? QitTabs._config.APP_URL
+}
+
+// returns a Quip url from a string
+// quip:// protocol gets converted into a useable browser url
+// https?://[something with quip in it]/ gets reused as is
+function getQuipUrl(arg) {
+
+  if (arg.startsWith('quip://')) {
+    let quipDocId = arg.replace('quip://', '').replace('/', '')
+
+    return `${QitTabs._config.APP_URL}/${quipDocId}?skip_desktop_app_redirect=1`
+
+  } else if (arg.match(/^https?:\/\/.*?quip.*?\//)) {
+    return arg
+  } 
+
+  return null
 }
 
 function setTabTitle(tab) {
