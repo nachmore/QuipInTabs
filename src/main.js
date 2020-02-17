@@ -5,6 +5,7 @@ const path = require('path')
 function createWindow () {
 
   app.allowRendererProcessReuse = true
+  app.setAppUserModelId(process.execPath)
 
   app.setAsDefaultProtocolClient("quip")
   
