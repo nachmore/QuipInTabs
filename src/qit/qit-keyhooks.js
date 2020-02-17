@@ -18,11 +18,15 @@ var QitKeyboardHook = module.exports = {
   },
 
   hookTab: (tab) => {
-    let webview = tab.webview
-    let remote = require('electron').remote
+    const remote = require('electron').remote
+    const webContents = remote.webContents.fromId(tab.webview.getWebContentsId())
+
+    // we want to avoid multiple listeners. Could restructure this with named functions
+    // but this has proven more reliable
+    webContents.removeAllListeners('before-input-event')
 
     // Workaround for: https://github.com/electron/electron/issues/14258
-    remote.webContents.fromId(webview.getWebContentsId()).on('before-input-event', (event, input) => {
+    webContents.on('before-input-event', (event, input) => {
 
       if (input.type !== 'keyDown') {
         return;
