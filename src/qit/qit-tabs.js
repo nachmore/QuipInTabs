@@ -94,6 +94,25 @@ var QitTabs = module.exports = {
       let QitKeyHooks = require('./qit-keyhooks')
       QitKeyHooks.hookTab(tab)
     });
+  },
+
+  /**
+   * @param keyCode can be a char (eg `'j'`) or an actual code (eg `'\u0008'` for backspace)
+   * @param modifiers array of [modifiers](https://www.electronjs.org/docs/api/accelerator#available-modifiers) eg `['control']`
+   */
+  sendKeysToActiveTab: (keyCode, modifiers) => {
+    
+    const tab = QitTabs.tabGroup.getActiveTab()
+    const webContents = QitTabs.getWebContents(tab)
+
+    webContents.sendInputEvent({ type: 'keyDown', modifiers, keyCode })
+    webContents.sendInputEvent({ type: 'char', modifiers, keyCode })
+    webContents.sendInputEvent({ type: 'keyUp', modifiers, keyCode })
+  },
+
+  getWebContents: (tab) => {
+    const remote = require('electron').remote
+    return remote.webContents.fromId(tab.webview.getWebContentsId())
   }
 }
 

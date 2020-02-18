@@ -6,11 +6,13 @@ var QitKeyboardHook = module.exports = {
       if (ev.ctrlKey) {
         switch (ev.key.toUpperCase()) {
           case 'T':
-            newTab()
+            QitTabs.newTab()
             break
           case 'W':
-            closeActiveTab()
+            QitTabs.tabGroup.getActiveTab().close()
             break
+          case 'J':
+            QitTabs.sendKeysToActiveTab('j', ['control'])
         }
       } 
     }, true)
@@ -55,14 +57,6 @@ var QitKeyboardHook = module.exports = {
 // private functions
 
 const QitTabs = require('./qit-tabs')
-
-function closeActiveTab() {
-  QitTabs.tabGroup.getActiveTab().close()
-}
-
-function newTab() {
-  QitTabs.newTab()
-}
 
 function incrementZoom(tab, amount) {
   let level = tab.webview.getZoomLevel() + amount
