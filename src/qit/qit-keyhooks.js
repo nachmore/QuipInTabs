@@ -1,3 +1,5 @@
+// Need to explore moving some of the overlapping keyhooks to https://www.electronjs.org/docs/api/global-shortcut
+
 var QitKeyboardHook = module.exports = {
 
   init: () => {
@@ -12,7 +14,11 @@ var QitKeyboardHook = module.exports = {
             QitTabs.tabGroup.getActiveTab().close()
             break
           case 'J':
-            QitTabs.sendKeysToActiveTab('j', ['control'])
+            QitTabs.sendKeysToActiveTab(['control'], 'j')
+            break
+          case 'N':
+            QitTabs.createNewDocument()
+            break
         }
       } 
     }, true)
@@ -34,10 +40,11 @@ var QitKeyboardHook = module.exports = {
         return;
       }
   
-      if (input.control) {
+      // these are the Control+key handlers, ensure they don't fire when Alt is held down as well
+      if (input.control && !input.alt) {
         switch (input.key.toUpperCase()) {
           case 'T':
-            newTab()
+            QitTabs.newTab()
             break
           case '=':
             // without this you need to use ctrl+shift+= which isn't great
@@ -46,6 +53,9 @@ var QitKeyboardHook = module.exports = {
             break
           case 'W':
             tab.close()
+            break
+          case 'N':
+            QitTabs.createNewDocument()
             break
         }
       }

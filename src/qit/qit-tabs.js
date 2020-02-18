@@ -96,18 +96,49 @@ var QitTabs = module.exports = {
     });
   },
 
+  createNewDocument: () => {
+    const tab = QitTabs.newTab()
+
+    //webview doesn't support once()
+    const handler = () => {
+      QitTabs.sendKeysToActiveTab(['Ctrl', 'Alt'], 'n')
+      tab.webview.removeEventListener('did-stop-loading', handler)
+    }
+
+    tab.webview.addEventListener('did-stop-loading', handler)
+  },
+
   /**
    * @param keyCode can be a char (eg `'j'`) or an actual code (eg `'\u0008'` for backspace)
    * @param modifiers array of [modifiers](https://www.electronjs.org/docs/api/accelerator#available-modifiers) eg `['control']`
    */
-  sendKeysToActiveTab: (keyCode, modifiers) => {
+  sendKeysToActiveTab: (modifiers, keyCode) => {
     
     const tab = QitTabs.tabGroup.getActiveTab()
+    QitTabs.sendKeysToTab(tab, modifiers, keyCode)
+  },
+
+  sendKeysToTab: (tab, modifiers, keyCode) => {
+    console.log(`Sending input: ${modifiers}+${keyCode}`)
+
     const webContents = QitTabs.getWebContents(tab)
 
-    webContents.sendInputEvent({ type: 'keyDown', modifiers, keyCode })
-    webContents.sendInputEvent({ type: 'char', modifiers, keyCode })
-    webContents.sendInputEvent({ type: 'keyUp', modifiers, keyCode })
+    // looks like multiple modifiers doesn't actually work, so need to split them out
+    // likely explanation: https://github.com/electron/electron/issues/7089#issuecomment-244631340
+    for (const modifier of modifiers) {
+      console.log("\tkeyDown: " + modifier)
+      webContents.sendInputEvent({type: 'keyDown', keyCode: modifier})
+    }
+
+    console.log(`\t\tKeyDown: ${modifiers}+${keyCode}`)
+    webContents.sendInputEvent({ type: 'keyDown', modifiers: modifiers, keyCode: keyCode })
+    console.log(`\t\tKeyUp: ${modifiers}+${keyCode}`)
+    webContents.sendInputEvent({ type: 'keyUp', modifiers: modifiers, keyCode: keyCode })
+
+    for (const modifier of modifiers) {
+      console.log("\tkeyUp: " + modifier)
+      webContents.sendInputEvent({type: 'keyUp', keyCode: modifier})
+    }
   },
 
   getWebContents: (tab) => {
