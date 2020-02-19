@@ -11,7 +11,17 @@ var QitKeyboardHook = module.exports = {
             QitTabs.newTab()
             break
           case 'W':
-            QitTabs.tabGroup.getActiveTab().close()
+
+            const tab = QitTabs.tabGroup.getActiveTab()
+
+            if (tab) {
+              tab.close()
+            } else {
+              // if there is no tab, and we again hit ctrl+w then exit the app
+              const {ipcRenderer} = require('electron');
+              ipcRenderer.send(require('./qit-ipc-messages').PLEASE_QUIT)
+            }
+
             break
           case 'J':
             QitTabs.sendKeysToActiveTab(['control'], 'j')

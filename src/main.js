@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain} = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -30,6 +30,10 @@ function createWindow () {
       mainWindow.webContents.send(require('./qit/qit-ipc-messages').SECOND_INSTANCE, argv)
     }
 
+  })
+
+  ipcMain.on(require('./qit/qit-ipc-messages').PLEASE_QUIT, (event, args) => {
+    app.quit()
   })
 
   // Create the browser window.
