@@ -43,6 +43,7 @@
   
   .etabs-tab.active {
     background: #f1f2f4;
+    border-top: 2px solid #fb7555 ;
   }
   
   .etabs-tab.flash {
