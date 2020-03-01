@@ -7,6 +7,13 @@ var QitKeyboardHook = module.exports = {
 
       if (ev.ctrlKey) {
         switch (ev.key.toUpperCase()) {
+          case 'TAB':
+            if (ev.shiftKey) {
+              QitTabs.activatePreviousTab()
+            } else {
+              QitTabs.activateNextTab()
+            }
+            break
           case 'T':
             QitTabs.newTab()
             break
@@ -53,6 +60,13 @@ var QitKeyboardHook = module.exports = {
       // these are the Control+key handlers, ensure they don't fire when Alt is held down as well
       if (input.control && !input.alt) {
         switch (input.key.toUpperCase()) {
+          case 'TAB':
+            if (input.shift) {
+              QitTabs.activatePreviousTab()
+            } else {
+              QitTabs.activateNextTab()
+            }
+            break
           case 'T':
             QitTabs.newTab()
             break

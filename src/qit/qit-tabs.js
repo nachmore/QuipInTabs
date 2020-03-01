@@ -108,6 +108,26 @@ var QitTabs = module.exports = {
     tab.webview.addEventListener('did-stop-loading', handler)
   },
 
+  activatePreviousTab: () => {
+    const previousTab = QitTabs.tabGroup.getPreviousTab()
+
+    if (previousTab) {
+      previousTab.activate()
+    } else {
+      QitTabs.tabGroup.getTabByPosition(-1).activate()
+    }
+  },
+
+  activateNextTab: () => {
+    const nextTab = QitTabs.tabGroup.getNextTab()
+
+    if (nextTab) {
+      nextTab.activate()
+    } else {
+      QitTabs.tabGroup.getTabByPosition(1).activate()
+    }
+  },
+
   /**
    * @param keyCode can be a char (eg `'j'`) or an actual code (eg `'\u0008'` for backspace)
    * @param modifiers array of [modifiers](https://www.electronjs.org/docs/api/accelerator#available-modifiers) eg `['control']`
