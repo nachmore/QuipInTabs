@@ -84,10 +84,7 @@ var QitTabs = module.exports = {
 
     tab.webview.addEventListener('did-stop-loading', () => {
 
-      // workaround for cursor disappearing
-      // https://github.com/electron/electron/issues/14474
-      tab.webview.blur()
-      tab.webview.focus()
+      QitTabs.fixFocus(tab)
 
       setTabTitle(tab)
 
@@ -108,24 +105,38 @@ var QitTabs = module.exports = {
     tab.webview.addEventListener('did-stop-loading', handler)
   },
 
-  activatePreviousTab: () => {
-    const previousTab = QitTabs.tabGroup.getPreviousTab()
+  /**
+   * Activates a tab, including working around the disappearing
+   * cursor issue (https://github.com/electron/electron/issues/14474)
+   */
+  activateTab: (tab) => {
+    tab.activate()
+    QitTabs.fixFocus(tab)
+  },
 
-    if (previousTab) {
-      previousTab.activate()
-    } else {
-      QitTabs.tabGroup.getTabByPosition(-1).activate()
+  fixFocus: (tab) => {
+    tab.webview.blur()
+    tab.webview.focus()
+  },
+
+  activatePreviousTab: () => {
+    let previousTab = QitTabs.tabGroup.getPreviousTab()
+
+    if (!previousTab) {
+      previousTab = QitTabs.tabGroup.getTabByPosition(-1)
     }
+
+    QitTabs.activateTab(previousTab)
   },
 
   activateNextTab: () => {
-    const nextTab = QitTabs.tabGroup.getNextTab()
+    let nextTab = QitTabs.tabGroup.getNextTab()
 
-    if (nextTab) {
-      nextTab.activate()
-    } else {
-      QitTabs.tabGroup.getTabByPosition(1).activate()
+    if (!nextTab) {
+      nextTab = QitTabs.tabGroup.getTabByPosition(1)
     }
+
+    QitTabs.activateTab(nextTab)
   },
 
   /**
