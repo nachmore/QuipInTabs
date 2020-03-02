@@ -24,8 +24,22 @@ var QitTabs = module.exports = {
         });
       }      
     })
+
+    QitTabs.hookNavigation()
   
     QitTabs.newTab(getStartUrl())
+  },
+
+  hookNavigation: () => {
+
+    document.getElementById('etabs-tab-button-back').addEventListener("click", () => {
+      QitTabs.navigateBack()
+    })
+
+    document.getElementById('etabs-tab-button-forward').addEventListener("click", () => {
+      QitTabs.navigateForward()
+    })
+
   },
 
   // Checks for a quip URL in the provided arguments and opens a tab for each
@@ -137,6 +151,22 @@ var QitTabs = module.exports = {
     }
 
     QitTabs.activateTab(nextTab)
+  },
+
+  navigateBack: () => {
+    const tab = QitTabs.tabGroup.getActiveTab()
+
+    if (tab) {
+      tab.webview.goBack()
+    }
+  },
+
+  navigateForward: () => {
+    const tab = QitTabs.tabGroup.getActiveTab()
+
+    if (tab) {
+      tab.webview.goForward()
+    }
   },
 
   /**

@@ -50,11 +50,11 @@
     background: linear-gradient(to bottom, rgba(255,243,170,1) 0%,rgba(255,227,37,1) 100%);
   }
   
-  .etabs-buttons {
+  .etabs-buttons, .etabs-nav-buttons {
     float: left;
   }
   
-  .etabs-buttons button {
+  .etabs-buttons button, .etabs-nav-buttons button {
     float: left;
     color: #333;
     background: none;
@@ -68,7 +68,7 @@
     padding: 4px 0;
   }
   
-  .etabs-buttons button:hover {
+  .etabs-buttons button:hover, .etabs-nav-buttons button:hover{
     color: #eee;
     background-color: #aaa;
   }

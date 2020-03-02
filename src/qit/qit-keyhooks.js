@@ -36,6 +36,12 @@ var QitKeyboardHook = module.exports = {
           case 'N':
             QitTabs.createNewDocument()
             break
+          case '[':
+            QitTabs.navigateBack()
+            break
+          case ']':
+            QitTabs.navigateForward()
+            break
         }
       } 
     }, true)
@@ -80,6 +86,12 @@ var QitKeyboardHook = module.exports = {
             break
           case 'N':
             QitTabs.createNewDocument()
+            break
+          case '[':
+            QitTabs.navigateBack()
+            break
+          case ']':
+            QitTabs.navigateForward()
             break
         }
       }
