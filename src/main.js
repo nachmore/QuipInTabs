@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu, ipcMain} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -30,6 +30,23 @@ function createWindow () {
       mainWindow.webContents.send(require('./qit/qit-ipc-messages').SECOND_INSTANCE, argv)
     }
 
+  })
+
+  // Open links targtting "new window" in an external browser. This works well as Quip
+  // automatically targets non-Quip URLs to _blank (new window) while QUIP links work
+  // inline.
+  // c/o https://stackoverflow.com/a/48945477
+  app.on('web-contents-created', (e, contents) => {
+
+    // Check for a webview
+    if (contents.getType() == 'webview') {
+
+      // Listen for any new window events
+      contents.on('new-window', (e, url) => {
+        e.preventDefault()
+        shell.openExternal(url)
+      })
+    }
   })
 
   ipcMain.on(require('./qit/qit-ipc-messages').PLEASE_QUIT, (event, args) => {
