@@ -62,6 +62,17 @@ var QitTabs = module.exports = {
           if (tab.webviewAttributes.src === url) {
             foundExisting = true
             tab.activate()
+
+            // special case scenario: When you don't have access to the page, you get a message (where you can
+            // request access), and then the rendered page is the Updates page but the URL stays the same.
+            // When clicking on the link again, the tab is activated, but also needs to be refreshed to check if access
+            // has now been granted.
+            if (tab.getTitle() === " Updates") {
+
+              // specifically set the URL again (reload()ing resets the URL to the Updates page)
+              tab.webview.src = url
+            }
+
             break
           }
 
