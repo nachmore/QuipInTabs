@@ -127,15 +127,26 @@ var QitTabs = module.exports = {
   },
 
   createNewDocument: () => {
-    const tab = QitTabs.newTab()
 
-    //webview doesn't support once()
-    const handler = () => {
+    const activeTab = QitTabs.tabGroup.getActiveTab()
+
+    // don't create a new tab when creating a new document if we're just on the Updates page
+    if (activeTab.getTitle() === " Updates") {
+      
       QitTabs.sendKeysToActiveTab(['Ctrl', 'Alt'], 'n')
-      tab.webview.removeEventListener('did-stop-loading', handler)
+
+    } else {
+      const tab = QitTabs.newTab()
+
+      //webview doesn't support once()
+      const handler = () => {
+        QitTabs.sendKeysToActiveTab(['Ctrl', 'Alt'], 'n')
+        tab.webview.removeEventListener('did-stop-loading', handler)
+      }
+  
+      tab.webview.addEventListener('did-stop-loading', handler)
     }
 
-    tab.webview.addEventListener('did-stop-loading', handler)
   },
 
   /**
