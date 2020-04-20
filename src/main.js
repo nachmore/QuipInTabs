@@ -4,7 +4,9 @@ const path = require('path')
 
 function createWindow () {
 
-  app.allowRendererProcessReuse = true
+  // need to disable process reuse since electron-spellchecker uses a native library:
+  // https://github.com/electron/electron/issues/18397
+  app.allowRendererProcessReuse = false
   app.setAppUserModelId(process.execPath)
 
   app.setAsDefaultProtocolClient("quip")
@@ -61,7 +63,10 @@ function createWindow () {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      webviewTag: true
+      webviewTag: true,
+      nodeIntegration: true,
+      nodeIntegrationInSubFrames: true,
+      nodeIntegrationInWorker: true
     }
   })
 
@@ -92,6 +97,3 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

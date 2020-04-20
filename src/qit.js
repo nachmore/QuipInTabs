@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
   qitKeyHooks.init()
 
   listenForInstanceLaunch()
+
 })
 
 function listenForInstanceLaunch() {
