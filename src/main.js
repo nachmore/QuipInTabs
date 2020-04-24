@@ -70,6 +70,12 @@ function createWindow () {
     }
   })
 
+  // depending on when the main window is closed, it can sometimes leave behind zombie
+  // renderers. Force closure when the window is closed...
+  mainWindow.on('closed', () => {
+    app.quit()
+  })
+
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
   
