@@ -98,11 +98,7 @@ var QitTabs = module.exports = {
       src: url ?? QitTabs._config.APP_URL,
       visible: true,
       active: true,
-      ready: QitTabs.onTabReady,
-      webviewAttributes: {
-        nodeintegration: true,
-        nodeintegrationinsubframes: true
-      }
+      ready: QitTabs.onTabReady
     })
 
     return newTab
@@ -111,8 +107,15 @@ var QitTabs = module.exports = {
 
   onTabReady: (tab) => {
 
-    tab.webview.addEventListener('did-stop-loading', () => {
+    // useful for debugging (to get the JS errors from the specific tab)
+    //tab.webview.getWebContents().openDevTools()
 
+    // setting these from the tabGroup as defaults for newTab doesn't work, which means
+    // node integration isn't set when coming from the + button. So set them here to
+    // capture all tab creation scenarios
+    tab.webview.nodeintegration = true
+
+    tab.webview.addEventListener('did-stop-loading', () => {
       QitTabs.fixFocus(tab)
 
       setTabTitle(tab)
@@ -120,9 +123,7 @@ var QitTabs = module.exports = {
 
       let QitKeyHooks = require('./qit-keyhooks')
       QitKeyHooks.hookTab(tab)
-
       
-
     });
   },
 
@@ -285,6 +286,11 @@ function setTabTitle(tab) {
 }
 
 function initSpellChecker(tab) {
+
+  if (tab.spellCheckInitiated === true)
+    return
+
+  tab.spellCheckInitiated = true
 
   // Need to inject https://github.com/electron-userland/electron-spellchecker into each new tab
   tab.webview.executeJavaScript(`
