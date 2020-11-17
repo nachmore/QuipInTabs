@@ -4,9 +4,7 @@ const path = require('path')
 
 function createWindow () {
 
-  // need to disable process reuse since electron-spellchecker uses a native library:
-  // https://github.com/electron/electron/issues/18397
-  app.allowRendererProcessReuse = false
+  app.allowRendererProcessReuse = true
   app.setAppUserModelId(process.execPath)
 
   app.setAsDefaultProtocolClient("quip")
