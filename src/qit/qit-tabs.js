@@ -291,12 +291,13 @@ function initSpellChecker(tab) {
     return
 
   tab.spellCheckInitiated = true
-
+  
   // Need to inject https://github.com/electron-userland/electron-spellchecker into each new tab
   tab.webview.executeJavaScript(`
     const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
-    window.spellCheckHandler = new SpellCheckHandler();
 
+    window.spellCheckHandler = new SpellCheckHandler();
+  
     window.spellCheckHandler.attachToInput();
     window.spellCheckHandler.provideHintText('Would be (much) better to pull some sample text from the document. That is a task for later.');
 
