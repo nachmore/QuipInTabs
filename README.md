@@ -23,7 +23,7 @@ src> node_modules\.bin\electron-rebuild
 
 ### Development Setup
 
-If you want to touch the protocol handler, or just debug in a more authentic space I recommend packaging the app (see above) and then in an `Administrator` cmd window (or with `gsudo` fort he last step):
+If you want to touch the protocol handler, or just debug in a more authentic space I recommend packaging the app (see above) and then in an `Administrator` cmd window (or with `gsudo` for the last step):
 
 ```
 src> cd qit-win32-x64\resources
