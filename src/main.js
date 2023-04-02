@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
+const { app, BrowserWindow, Menu, MenuItem, ipcMain, shell } = require('electron')
 const path = require('path')
 
 async function createWindow() {
@@ -8,7 +8,7 @@ async function createWindow() {
   app.setAppUserModelId(process.execPath)
 
   app.setAsDefaultProtocolClient("quip")
-  
+
   console.log(process.argv)
   var mainWindow = null
 
@@ -71,10 +71,8 @@ async function createWindow() {
     }
   });
 
-  const {preload} = require('./qit/qit-config');
+  const { preload } = require('./qit/qit-config');
   await preload(mainWindow);
-
-  app.webContents = {};
 
   // depending on when the main window is closed, it can sometimes leave behind zombie
   // renderers. Force closure when the window is closed...
@@ -88,14 +86,66 @@ async function createWindow() {
   remote.enable(mainWindow.webContents);
 
   mainWindow.webContents.on('did-attach-webview', (e, webContents) => {
-    console.log(`Attached webContents: ${webContents.id}`)
-    app.webContents[webContents.id] = webContents;
+
+    webContents.on('context-menu', (event, params) => {
+      const menu = new Menu()
+
+      // Add each spelling suggestion
+      for (const suggestion of params.dictionarySuggestions) {
+        menu.append(new MenuItem({
+          label: suggestion,
+          click: () => mainWindow.webContents.replaceMisspelling(suggestion)
+        }))
+      }
+
+      // Allow users to add the misspelled word to the dictionary
+      if (params.misspelledWord) {
+        menu.append(
+          new MenuItem({
+            label: '➕ Add to dictionary',
+            click: () => mainWindow.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+          })
+        )
+
+        menu.append(new MenuItem({
+          type: 'separator'
+        }))
+      }
+
+      menu.append(new MenuItem({
+        role: 'cut'
+      }));
+
+      menu.append(new MenuItem({
+        role: 'copy'
+      }));
+
+      menu.append(new MenuItem({
+        role: 'paste'
+      }));
+
+      menu.append(new MenuItem({
+        role: 'selectAll'
+      }));
+
+      if (params.misspelledWord) {
+        menu.append(new MenuItem({
+          type: 'separator'
+        }))
+      }
+
+      menu.append(new MenuItem({
+        role: 'toggleSpellChecker'
+      }));
+
+      menu.popup()
+    })
+
+
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
-
-  
   
   // disable ctrl+w. Yes, could update whole menu, but that's a task for another day :)
   Menu.getApplicationMenu().items[3].submenu.items[2].enabled = false

@@ -9,18 +9,6 @@ src> node node_modules\electron-packager\bin\electron-packager.js . qit --platfo
 
 (`--overwrite` as needed)
 
-### Enabling Spell Check
-
-The default spell check library is broken (looking for suggestions for others!) to fix do the following:
-
-```
-src> cd node_modules\@felixrieseberg
-src\node_modules\@felixrieseberg> rmdir /s /q spellchecker
-src\node_modules\@felixrieseberg> git clone https://github.com/nachmore/node-spellchecker.git spellchecker
-src\node_modules\@felixrieseberg> cd ..\..
-src> node_modules\.bin\electron-rebuild
-```
-
 ### Development Setup
 
 If you want to touch the protocol handler, or just debug in a more authentic space I recommend packaging the app (see above) and then in an `Administrator` cmd window (or with `gsudo` for the last step):

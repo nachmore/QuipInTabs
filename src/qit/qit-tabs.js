@@ -114,7 +114,6 @@ var QitTabs = module.exports = {
       QitTabs.fixFocus(tab)
 
       setTabTitle(tab)
-      initSpellChecker(tab)
 
       let QitKeyHooks = require('./qit-keyhooks')
       QitKeyHooks.hookTab(tab)
@@ -287,32 +286,4 @@ function setTabTitle(tab) {
 
   let title = tab.webview.getTitle().replace(' - Quip', '').replace(/\(\d+\)/, "")
   tab.setTitle(title)
-}
-
-function initSpellChecker(tab) {
-
-  if (tab.spellCheckInitiated === true)
-    return
-
-  tab.spellCheckInitiated = true
-  
-  // Need to inject https://github.com/electron-userland/electron-spellchecker into each new tab
-  tab.webview.executeJavaScript(`
-    const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
-
-    window.spellCheckHandler = new SpellCheckHandler();
-  
-    window.spellCheckHandler.attachToInput();
-    window.spellCheckHandler.provideHintText('Would be (much) better to pull some sample text from the document. That is a task for later.');
-
-    // I haven't noticed a memory or speed benefit to this, but I have noticed that when this is enabled
-    // the underlines will eagerly disappear when switching between tabs / windows. Will continue to monitor.
-    //window.spellCheckHandler.autoUnloadDictionariesOnBlur();
-
-    let contextMenuBuilder = new ContextMenuBuilder(window.spellCheckHandler);
-    let contextMenuListener = new ContextMenuListener(async (info) => {
-      await contextMenuBuilder.showPopupMenu(info);
-    });
-  `);
-  
 }
