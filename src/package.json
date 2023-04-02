@@ -14,13 +14,14 @@
   "author": "GitHub",
   "license": "MIT License",
   "devDependencies": {
-    "electron": "^22.0.0",
-    "electron-packager": "^17.1.1",
-    "electron-rebuild": "^1.11.0"
+    "electron": "^23.2.1",
+    "electron-packager": "^17.1.1"
   },
   "dependencies": {
-    "dragula": "^3.7.3",
+    "@electron/remote": "^2.0.9",
+    "electron-rebuild": "^3.2.9",
     "electron-spellchecker": "^2.2.1",
-    "electron-tabs": "^0.12.1"
+    "electron-tabs": "^1.0.1",
+    "nan": "^2.17.0"
   }
 }

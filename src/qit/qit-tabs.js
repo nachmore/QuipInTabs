@@ -1,3 +1,4 @@
+
 var QitTabs = module.exports = {
 
   _config: require('./qit-config'),
@@ -5,28 +6,18 @@ var QitTabs = module.exports = {
   tabGroup: null,
 
   init: () => {
-    const TabGroup = require('electron-tabs')
-    const dragula = require('dragula')
+    const tabGroups = require('electron-tabs');
+    QitTabs.tabGroup = document.querySelector("tab-group");
 
-    QitTabs.tabGroup = new TabGroup({
-      newTab: {
-        title: '',
-        src: QitTabs._config.APP_URL,
-        visible: true,
-        active: true,
-        ready: QitTabs.onTabReady
-      },    
-      closeButtonText: '❌',
-      newTabButtonText: '➕',
-      ready: function (tabGroup) {
-        dragula([tabGroup.tabContainer], {
-          direction: "horizontal"
-        });
-      }      
-    })
+    QitTabs.tabGroup.setDefaultTab({
+      title: '',
+      src: QitTabs._config.APP_URL,
+      visible: true,
+      active: true,
+      ready: QitTabs.onTabReady
+    });
 
     QitTabs.hookNavigation()
-  
     QitTabs.newTab(getStartUrl())
   },
 
@@ -93,7 +84,12 @@ var QitTabs = module.exports = {
 
   newTab: (url) => {
 
-    let newTab = QitTabs.tabGroup.addTab({
+    if (!QitTabs.tabGroup.addTab) {
+      console.log("L*(");
+      return;
+    }
+
+    const newTab = QitTabs.tabGroup.addTab({
       title: '',
       src: url ?? QitTabs._config.APP_URL,
       visible: true,
@@ -101,8 +97,7 @@ var QitTabs = module.exports = {
       ready: QitTabs.onTabReady
     })
 
-    return newTab
-
+    return newTab;
   },
 
   onTabReady: (tab) => {
@@ -165,10 +160,18 @@ var QitTabs = module.exports = {
   },
 
   activatePreviousTab: () => {
+
+    let activeTab = QitTabs.tabGroup.getActiveTab()
+
     let previousTab = QitTabs.tabGroup.getPreviousTab()
 
+    // getPreviousTab is borked, i.e. it won't return pos 0, so work around it
     if (!previousTab) {
-      previousTab = QitTabs.tabGroup.getTabByPosition(-1)
+      if (activeTab.id == 1) {
+        previousTab = QitTabs.tabGroup.getTabByPosition(0)
+      } else if (activeTab.id == 0) {
+        previousTab = QitTabs.tabGroup.getTabByPosition(-1)
+      }
     }
 
     QitTabs.activateTab(previousTab)
@@ -178,8 +181,9 @@ var QitTabs = module.exports = {
     let nextTab = QitTabs.tabGroup.getNextTab()
 
     if (!nextTab) {
-      nextTab = QitTabs.tabGroup.getTabByPosition(1)
+      nextTab = QitTabs.tabGroup.getTabByPosition(0)
     }
+
 
     QitTabs.activateTab(nextTab)
   },
@@ -234,7 +238,7 @@ var QitTabs = module.exports = {
   },
 
   getWebContents: (tab) => {
-    const remote = require('electron').remote
+    const remote = require('@electron/remote');
     return remote.webContents.fromId(tab.webview.getWebContentsId())
   }
 }
@@ -246,7 +250,7 @@ function getStartUrl() {
   let url = null
 
   // check if we were invoked as a protocol handler (or with a URL as an arg)
-  let argv = require('electron').remote.process.argv
+  const argv = require('@electron/remote').process.argv;
 
   for (let arg of argv) {
 

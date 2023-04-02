@@ -49,8 +49,8 @@ var QitKeyboardHook = module.exports = {
   },
 
   hookTab: (tab) => {
-    const remote = require('electron').remote
-    const webContents = remote.webContents.fromId(tab.webview.getWebContentsId())
+
+    const webContents = QitTabs.getWebContents(tab)
 
     // we want to avoid multiple listeners. Could restructure this with named functions
     // but this has proven more reliable

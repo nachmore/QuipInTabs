@@ -3,30 +3,54 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline' 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
 
     <link rel="stylesheet" href="./css/qit-electron.css">
     <link rel="stylesheet" href="./css/qit-tabs.css">
-    <link rel="stylesheet" href="./node_modules/dragula/dist/dragula.css">
 
     <title>QIT (Quip in Tabs)</title>
   </head>
   <body>
     
-    <div class="etabs-tabgroup">
-      <div class="etabs-nav-buttons">
-        <button class="etabs-tab-button-new" id="etabs-tab-button-back">◀</button>
-        <button class="etabs-tab-button-new" id="etabs-tab-button-forward">▶</button>
+    <tab-group new-tab-button="true" sortable="true">
+      <style>
+        .nav {
+          padding-left: 50px;
+          width: calc(100% - 50px);
+        }
+
+        .tab {
+          margin-left: 2px;
+          max-width: 200px;
+        }
+
+        .tab-title {
+          width: 100%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      </style>
+    </tab-group>
+    <div class="etabs-nav-buttons">
+      <button class="etabs-tab-button-new" id="etabs-tab-button-back">⬅️</button>
+      <button class="etabs-tab-button-new" id="etabs-tab-button-forward">➡️</button>
+
       </div>
+
+    </tab-group>
+      <!--
+    <div class="etabs-tabgroup">
       <div class="etabs-tabs"></div>
       <div class="etabs-buttons"></div>
     </div>
-
-    <div class="etabs-views"></div>
+    -->
+  <!--<script src="node_modules/electron-tabs/dist/electron-tabs.js"></script>-->
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
     <script src="./fontawesome/js/all.js"></script>
+
   </body>
 </html>

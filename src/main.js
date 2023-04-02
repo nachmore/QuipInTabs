@@ -2,7 +2,7 @@
 const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
 const path = require('path')
 
-function createWindow () {
+async function createWindow() {
 
   app.allowRendererProcessReuse = true
   app.setAppUserModelId(process.execPath)
@@ -64,9 +64,17 @@ function createWindow () {
       webviewTag: true,
       nodeIntegration: true,
       nodeIntegrationInSubFrames: true,
-      nodeIntegrationInWorker: true
+      nodeIntegrationInWorker: true,
+      spellcheck: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
     }
-  })
+  });
+
+  const {preload} = require('./qit/qit-config');
+  await preload(mainWindow);
+
+  app.webContents = {};
 
   // depending on when the main window is closed, it can sometimes leave behind zombie
   // renderers. Force closure when the window is closed...
@@ -74,8 +82,20 @@ function createWindow () {
     app.quit()
   })
 
+  const remote = require('@electron/remote/main');
+
+  remote.initialize();
+  remote.enable(mainWindow.webContents);
+
+  mainWindow.webContents.on('did-attach-webview', (e, webContents) => {
+    console.log(`Attached webContents: ${webContents.id}`)
+    app.webContents[webContents.id] = webContents;
+  });
+
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
+
+  
   
   // disable ctrl+w. Yes, could update whole menu, but that's a task for another day :)
   Menu.getApplicationMenu().items[3].submenu.items[2].enabled = false
