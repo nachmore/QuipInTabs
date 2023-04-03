@@ -4,3 +4,10 @@ module.exports = {
   APP_URL: **fill in a Quip website url...**,
   preload: (browserWindow) => {return preload(browserWindow)}
 }
+
+async function preload(browserWindow) {
+  // add any code here that you may want to run before QiT launches this
+  // is particularly useful for enterprise scenarios where you might want
+  // to inject cookie-injector code to ensure corporate headers are where
+  // they're supposed to be etc.
+}
