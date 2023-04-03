@@ -19,7 +19,13 @@ function readAppUrl() {
   try {
     const {APP_URL} = require('../qit.userconf.js')
 
-    return APP_URL
+    let rv = APP_URL
+
+    if (rv.endsWith('/')) {
+      rv = rv.slice(0, -1)
+    }
+
+    return rv
   } catch (err) {
     // TODO: don't love having UI functionality this far down
 

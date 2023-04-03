@@ -20,7 +20,7 @@ async function createWindow() {
   }
 
   app.on('second-instance', (event, argv, cwd) => {
-    console.log("secondary instance launched...")
+    console.log(`secondary instance launched... argv: ${argv}`)
 
     if (mainWindow) {
       if (mainWindow.isMinimized())

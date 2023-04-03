@@ -69,7 +69,7 @@ var QitTabs = module.exports = {
 
         }
 
-        if (!foundExisting) 
+        if (!foundExisting)
           QitTabs.newTab(url)
 
         opened = true
@@ -117,7 +117,7 @@ var QitTabs = module.exports = {
 
       let QitKeyHooks = require('./qit-keyhooks')
       QitKeyHooks.hookTab(tab)
-      
+
     });
   },
 
@@ -127,7 +127,7 @@ var QitTabs = module.exports = {
 
     // don't create a new tab when creating a new document if we're just on the Updates page
     if (activeTab.getTitle() === " Updates") {
-      
+
       QitTabs.sendKeysToActiveTab(['Ctrl', 'Alt'], 'n')
 
     } else {
@@ -138,7 +138,7 @@ var QitTabs = module.exports = {
         QitTabs.sendKeysToActiveTab(['Ctrl', 'Alt'], 'n')
         tab.webview.removeEventListener('did-stop-loading', handler)
       }
-  
+
       tab.webview.addEventListener('did-stop-loading', handler)
     }
 
@@ -208,7 +208,7 @@ var QitTabs = module.exports = {
    * @param modifiers array of [modifiers](https://www.electronjs.org/docs/api/accelerator#available-modifiers) eg `['control']`
    */
   sendKeysToActiveTab: (modifiers, keyCode) => {
-    
+
     const tab = QitTabs.tabGroup.getActiveTab()
     QitTabs.sendKeysToTab(tab, modifiers, keyCode)
   },
@@ -222,7 +222,7 @@ var QitTabs = module.exports = {
     // likely explanation: https://github.com/electron/electron/issues/7089#issuecomment-244631340
     for (const modifier of modifiers) {
       console.log("\tkeyDown: " + modifier)
-      webContents.sendInputEvent({type: 'keyDown', keyCode: modifier})
+      webContents.sendInputEvent({ type: 'keyDown', keyCode: modifier })
     }
 
     console.log(`\t\tKeyDown: ${modifiers}+${keyCode}`)
@@ -232,7 +232,7 @@ var QitTabs = module.exports = {
 
     for (const modifier of modifiers) {
       console.log("\tkeyUp: " + modifier)
-      webContents.sendInputEvent({type: 'keyUp', keyCode: modifier})
+      webContents.sendInputEvent({ type: 'keyUp', keyCode: modifier })
     }
   },
 
@@ -268,13 +268,20 @@ function getStartUrl() {
 function getQuipUrl(arg) {
 
   if (arg.startsWith('quip://')) {
-    let quipDocId = arg.replace('quip://', '').replace('/', '')
+    const matches = arg.match(/quip:\/\/(.*?)\//)
 
-    return `${QitTabs._config.APP_URL}/${quipDocId}?skip_desktop_app_redirect=1`
+    if (matches.length < 2) {
+      return null
+    }
+
+    const quipDocId = matches[1]
+    const url = `${QitTabs._config.APP_URL}/${quipDocId}?skip_desktop_app_redirect=1`
+
+    return url
 
   } else if (arg.match(/^https?:\/\/.*?quip.*?\//)) {
     return arg
-  } 
+  }
 
   return null
 }
