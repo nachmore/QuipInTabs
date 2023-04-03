@@ -14,10 +14,11 @@
   "author": "Oren Nachman",
   "license": "MIT License",
   "devDependencies": {
-    "electron-packager": "^17.1.1",
-    "@electron/rebuild": "github:electron/rebuild"
+    "@electron/rebuild": "github:electron/rebuild",
+    "electron-packager": "^17.1.1"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.9",
     "electron": "^23.2.1",
     "electron-tabs": "^1.0.1",
     "nan": "^2.17.0"
