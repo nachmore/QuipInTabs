@@ -102,23 +102,23 @@ var QitTabs = module.exports = {
 
   onTabReady: (tab) => {
 
-    // useful for debugging (to get the JS errors from the specific tab)
-    //tab.webview.getWebContents().openDevTools()
-
     // setting these from the tabGroup as defaults for newTab doesn't work, which means
     // node integration isn't set when coming from the + button. So set them here to
     // capture all tab creation scenarios
     tab.webview.nodeintegration = true
 
     tab.webview.addEventListener('did-stop-loading', () => {
+      // useful for debugging (to get the JS errors from the specific tab)
+      //QitTabs.getWebContents(tab).openDevTools()
+
+      console.log('did-stop-loading')
       QitTabs.fixFocus(tab)
 
       setTabTitle(tab)
 
       let QitKeyHooks = require('./qit-keyhooks')
       QitKeyHooks.hookTab(tab)
-
-    });
+    })
   },
 
   createNewDocument: () => {

@@ -32,23 +32,6 @@ async function createWindow() {
 
   })
 
-  // Open links targtting "new window" in an external browser. This works well as Quip
-  // automatically targets non-Quip URLs to _blank (new window) while QUIP links work
-  // inline.
-  // c/o https://stackoverflow.com/a/48945477
-  app.on('web-contents-created', (e, contents) => {
-
-    // Check for a webview
-    if (contents.getType() == 'webview') {
-
-      // Listen for any new window events
-      contents.on('new-window', (e, url) => {
-        e.preventDefault()
-        shell.openExternal(url)
-      })
-    }
-  })
-
   ipcMain.on(require('./qit/qit-ipc-messages').PLEASE_QUIT, (event, args) => {
     app.quit()
   })
@@ -87,8 +70,30 @@ async function createWindow() {
 
   mainWindow.webContents.on('did-attach-webview', (e, webContents) => {
 
+    webContents.on('new-window', (e, url) => {
+      console.log("in second new-window")
+    })
+
     webContents.on('context-menu', (event, params) => {
+
       const menu = new Menu()
+
+      if (params.linkURL) {
+        const url = new URL(params.linkURL)
+
+        // if the url doesn't include "quip" then it is likely an external URL,
+        // open it in the system browser
+        if (!url.host.includes('quip')) {
+          menu.append(new MenuItem({
+            label: '↗️ Open link',
+            click: () => shell.openExternal(url.href)
+          }))
+
+          menu.append(new MenuItem({
+            type: 'separator'
+          }))
+        }
+      }
 
       // Add each spelling suggestion
       for (const suggestion of params.dictionarySuggestions) {
