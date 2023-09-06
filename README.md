@@ -15,11 +15,19 @@ If you want to touch the protocol handler, or just debug in a more authentic spa
 
 ```
 src> cd qit-win32-x64\resources
-src\qit-win32-x64\resources> move app app_orig 
+src\qit-win32-x64\resources> move app app_orig
 src\qit-win32-x64\resources> mklink /d app [path-to-repo]\src
 symbolic link created for app <<===>> [path-to-repo]\src
 ```
 
 You can now run `qit.exe` from `src\qit-win32-x64` but have the source pulled from your repo for development.
+
+#### Updating Packages
+
+```
+src> npm upgrade
+```
+
+Good luck 😂
 
 
