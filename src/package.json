@@ -15,7 +15,7 @@
   "license": "MIT License",
   "devDependencies": {
     "@electron/rebuild": "github:electron/rebuild",
-    "electron": "^26.2.1",
+    "electron": "^26.2.4",
     "electron-packager": "^17.1.1"
   },
   "dependencies": {
