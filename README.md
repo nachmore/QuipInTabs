@@ -1,6 +1,17 @@
 # QuipInTabs
 Quip on Windows doesn't support tabs. That's nuts. Use this to stick Quip into a tab.
 
+### Auto-opening Quip Links in Qit on Windows
+
+1. Get a User-Agent switcher for your browser
+2. Visit your Quip site
+3. Override the UA for your domain and set it to a browser running on a Mac
+4. Reload
+5. Click on your profile icon -> Appearance -> Open Links in App
+6. Close the tab
+7. Open a quip link
+8. Select `qit` as your handler for Quip links
+
 ### Packaging Instructions
 
 ```
