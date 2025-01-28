@@ -151,7 +151,7 @@ async function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
-  
+
   // disable ctrl+w. Yes, could update whole menu, but that's a task for another day :)
   Menu.getApplicationMenu().items[3].submenu.items[2].enabled = false
 

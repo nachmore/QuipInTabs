@@ -28,6 +28,10 @@ You can now run `qit.exe` from `src\qit-win32-x64` but have the source pulled fr
 src> npm upgrade
 ```
 
+#### Updating Electron
+
+```
+src> npm install electron@latest
+```
+
 Good luck 😂
-
-

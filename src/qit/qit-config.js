@@ -1,5 +1,5 @@
 var QitConfig = module.exports = {
-  preload: (browserWindow) => {return _preload(browserWindow)}, 
+  preload: (browserWindow) => {return _preload(browserWindow)},
   APP_URL: readAppUrl()
 }
 
@@ -8,7 +8,7 @@ function _preload(browserWindow) {
     const {preload} = require('../qit.userconf.js')
 
     return preload(browserWindow)
-    
+
   } catch (err) {
     console.log(`QIT: no valid preload found: ${err}`)
   }
